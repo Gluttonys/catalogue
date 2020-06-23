@@ -88,10 +88,11 @@ class Catalogue {
 
     let count = 0
     for (let top of boundary.querySelectorAll("*")) {
-      top.id = `catalogue-${count}`
       if (top.tagName === this.defaultOptions.topLeave.toUpperCase()) {
+        top.id = `catalogue-${count}`
         resultStr += `<li><a href="#catalogue-${count}">${top.innerText}</a></li>`
       } else if (top.tagName === this.defaultOptions.secondLeave.toUpperCase()) {
+        top.id = `catalogue-${count}`
         resultStr += `<ul><li><a href="#catalogue-${count}">${top.innerText}</a></li></ul>`
       }
       count++
