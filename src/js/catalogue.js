@@ -7,7 +7,9 @@ class Catalogue {
     backgroundColor: "#ec407a10",
     padding: "16",
     color: "#EC407A",
-    fontSize: "16"
+    fontSize: "16",
+    // 偏移量
+    offsetTop: "50"
   }
 
   titleList = ["h1", "h2", "h3", "h4", "h5", "h6"]
@@ -90,10 +92,10 @@ class Catalogue {
     for (let top of boundary.querySelectorAll("*")) {
       if (top.tagName === this.defaultOptions.topLeave.toUpperCase()) {
         top.id = `catalogue-${count}`
-        resultStr += `<li><a href="#catalogue-${count}">${top.innerText}</a></li>`
+        resultStr += `<li data-to="catalogue-${count}">${top.innerText}</li>`
       } else if (top.tagName === this.defaultOptions.secondLeave.toUpperCase()) {
         top.id = `catalogue-${count}`
-        resultStr += `<ul><li><a href="#catalogue-${count}">${top.innerText}</a></li></ul>`
+        resultStr += `<ul><li data-to="catalogue-${count}">${top.innerText}</li></ul>`
       }
       count++
     }
@@ -101,11 +103,24 @@ class Catalogue {
     resultStr += "</ol>"
     this.catalogueList.insertAdjacentHTML("afterbegin", resultStr)
 
-    for (let a of this.catalogueList.querySelectorAll("a")) {
-      a.style.color = this.defaultOptions.color
-      a.style.fontSize = `${parseInt(this.defaultOptions.fontSize)}px`
-    }
+    let lis = document.querySelectorAll("[data-to]")
+    lis.forEach(li => {
+      Catalogue.to(li, `#${li.dataset.to}`, this.defaultOptions.offsetTop)
+    })
 
   }
 
+  static to(dom, toSelector, offset, time = 1000) {
+    /**
+     * dom : 给选中的元素添加事件
+     * toSelector : 移动到哪个元素
+     * offset : 移动偏移量
+     * @type {NodeListOf<Element>}
+     */
+    let y = document.querySelector(toSelector).offsetTop - offset
+
+    dom.addEventListener("click", () => {
+      window.scrollTo(0, y)
+    })
+  }
 }
